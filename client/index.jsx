@@ -1,13 +1,16 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+//import { createRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 
 import App from './app';
 
-const container = document.getElementById('app');
-const root = createRoot(container);
-
 const routes = import.meta.glob('./routes/*.jsx');
 
-root.render(
-  <App initialRoute={document.location.pathname} routes={routes} />
-);
+//const container = document.getElementById('app');
+//const root = createRoot(container);
+
+// root.render(
+//   <App initialRoute={document.location.pathname} routes={routes} />
+// );
+
+hydrateRoot(document, <App initialRoute={document.location.pathname} routes={routes} />);

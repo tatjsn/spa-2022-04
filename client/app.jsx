@@ -36,10 +36,6 @@ const getPageFromPath = memoize(function getPageFromPathImp(routes, path) {
   return React.lazy(routes[path]);
 });
 
-function Blank() {
-  return (<p>Blank</p>);
-}
-
 export default function App({ initialRoute, initialPage, routes }) {
   const [route, setRoute] = useState(initialRoute);
 
@@ -49,24 +45,33 @@ export default function App({ initialRoute, initialPage, routes }) {
     };
   }, []);
 
-  const path = `./routes${route}.jsx`;
+  const path = `./routes${route === '/' ? '/index' : route}.jsx`;
 
-  const Page = initialPage || getPageFromPath(routes, path) || Blank;
+  const Page = initialPage || getPageFromPath(routes, path);
 
   const data = getDataFromRoute(route);
 
+  // Must return from <html> since rendering target is the document
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouteContext.Provider value={{ setRoute, fetcher }}>
-        <h1>Hello from simple router</h1>
-        <div>
-          [<Anchor href="/hoge">Goto Hoge</Anchor>]
-          [<Anchor href="/fuga">Goto Fuga</Anchor>]
-        </div>
-        <Suspense fallback={<p className="alert">Loading...</p>}>
-          <Page data={data} />
-        </Suspense>
-      </RouteContext.Provider>
-    </QueryClientProvider>
+    <html>
+      <head>
+        <title>Title</title>
+        <link rel="stylesheet" href="/static/index.css" />
+      </head>
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <RouteContext.Provider value={{ setRoute, fetcher }}>
+            <h1>Hello from simple router</h1>
+            <div>
+              [<Anchor href="/hoge">Goto Hoge</Anchor>]
+              [<Anchor href="/fuga">Goto Fuga</Anchor>]
+            </div>
+            <Suspense fallback={<p className="alert">Loading...</p>}>
+              <Page data={data} />
+            </Suspense>
+          </RouteContext.Provider>
+        </QueryClientProvider>
+      </body>
+    </html>
   );
 }

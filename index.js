@@ -3,25 +3,44 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 require('@swc/register');
 const { default: App } = require('./client/app');
-const { default: Hoge } = require('./client/routes/hoge');
-const { default: Greet } = require('./client/components/Greet');
 
 const app = express();
 
-app.get('/hoge', (req, res) => {
-  const ssr = ReactDOMServer.renderToString(React.createElement(App, {
-    initialRoute: '/hoge',
-    initialPage: Hoge,
-  }));
-  res.send(`<body>${ssr}</body>`);
-});
+app.use('/static', express.static('client/build'));
 
-app.get('/', (req, res) => {
-  const ssr = ReactDOMServer.renderToString(React.createElement(App, {
-    initialRoute: '/',
-    initialPage: Greet,
-  }));
-  res.send(`<body>${ssr}</body>`);
+app.get('/*', (req, res) => {
+  let didError = false;
+  // File name is necessary to reach .jsx file
+  const { default: Page } = require('./client/routes' + (req.url === '/' ? '/index' : req.url));
+  const stream = ReactDOMServer.renderToPipeableStream(
+    React.createElement(App, {
+      initialRoute: req.url,
+      initialPage: Page,
+    }),
+    {
+      bootstrapModules: [
+        '/static/index.js',
+      ],
+      onShellReady() {
+        res.statusCode = didError ? 500 : 200;
+        res.setHeader('Content-type', 'text/html');
+        stream.pipe(res);
+      },
+      onShellError(error) {
+        // Something errored before we could complete the shell so we emit an alternative shell.
+        res.statusCode = 500;
+        res.send(
+          '<div>Shell Error!</div>'
+        );
+      },
+      onError(err) {
+        didError = true;
+        console.error(err);
+      },
+    }
+  );
+  // To reduce TTFB (optional)
+  setTimeout(stream.abort, 1000);
 });
 
 app.listen(5000);

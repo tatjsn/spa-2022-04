@@ -20,6 +20,11 @@
   },
   "homepage": "https://github.com/tatjsn/spa-2022-04#readme",
   "dependencies": {
-    "local-web-server": "^5.2.0"
+    "@swc/core": "^1.2.165",
+    "@swc/register": "^0.1.10",
+    "express": "^4.17.3",
+    "local-web-server": "^5.2.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }

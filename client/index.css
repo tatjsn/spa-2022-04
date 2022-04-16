@@ -1,0 +1,9 @@
+/* Add CSS styles here! */
+body {
+  font-family: sans-serif;
+}
+
+.alert {
+  color: white;
+  background-color: red;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "streaming-suspense",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build --prefix client",
+    "start": "ws --directory client/build --spa index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tatjsn/spa-2022-04.git"
+  },
+  "keywords": [],
+  "author": "tatjsn <tatjsn@gmail.com> (https://github.com/tatjsn/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tatjsn/spa-2022-04/issues"
+  },
+  "homepage": "https://github.com/tatjsn/spa-2022-04#readme",
+  "dependencies": {
+    "local-web-server": "^5.2.0"
+  }
+}

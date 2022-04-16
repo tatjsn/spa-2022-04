@@ -44,7 +44,7 @@ const getPageFromPath = memoize(function getPageFromPathImp(path) {
 });
 
 function Blank() {
-  return (<div>Blank</div>);
+  return (<p>Blank</p>);
 }
 
 function App() {

@@ -11,6 +11,18 @@
 
 ## Dependencies
 
+### Client
+
 - react + react-dom
 - react-query
 - fast-memoize
+
+### Server
+
+- express
+- swc
+
+### Development
+
+- snowpack (esbuild) :grimacing:
+  - It was handy at the beginning.

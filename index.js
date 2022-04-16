@@ -6,16 +6,19 @@ const { default: App } = require('./client/app');
 
 const app = express();
 
+function getPageFromRoute(route) {
+  const { default: Page } = require('./client/routes' + (route === '/' ? '/index' : route));
+  return Page;
+}
+
 app.use('/static', express.static('client/build'));
 
 app.get('/*', (req, res) => {
   let didError = false;
-  // File name is necessary to reach .jsx file
-  const { default: Page } = require('./client/routes' + (req.url === '/' ? '/index' : req.url));
   const stream = ReactDOMServer.renderToPipeableStream(
     React.createElement(App, {
       initialRoute: req.url,
-      initialPage: Page,
+      getPageFromRoute,
     }),
     {
       bootstrapModules: [

@@ -5,6 +5,8 @@ import memoize from 'fast-memoize';
 import Anchor from './components/Anchor';
 import RouteContext from './components/RouteContext';
 
+// BEGIN These will be moved to non-shared code
+
 async function fetcher({ queryKey }) {
   await new Promise((r) => setTimeout(r, 3 * 1000));
   return `Data loaded for ${queryKey}`;
@@ -30,14 +32,9 @@ const getDataFromRoute = memoize(function getDataFromRouteImp(route) {
   };
 });
 
-const getPageFromPath = memoize(function getPageFromPathImp(routes, path) {
-  if (!routes[path]) {
-    return null;
-  }
-  return React.lazy(routes[path]);
-});
+// END
 
-export default function App({ initialRoute, initialPage, routes }) {
+export default function App({ initialRoute, getPageFromRoute }) {
   const [route, setRouteImp] = useState(initialRoute);
 
   useEffect(() => {
@@ -46,9 +43,7 @@ export default function App({ initialRoute, initialPage, routes }) {
     };
   }, []);
 
-  const path = `./routes${route === '/' ? '/index' : route}.jsx`;
-
-  const Page = initialPage || getPageFromPath(routes, path);
+  const Page = getPageFromRoute(route);
 
   const data = getDataFromRoute(route);
 

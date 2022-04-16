@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build --prefix client",
+    "build": "cd client; snowpack build",
     "start": "ws --directory client/build --spa index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,12 +19,17 @@
     "url": "https://github.com/tatjsn/spa-2022-04/issues"
   },
   "homepage": "https://github.com/tatjsn/spa-2022-04#readme",
+  "devDependencies": {
+    "local-web-server": "^5.2.0",
+    "snowpack": "^3.3.7"
+  },
   "dependencies": {
     "@swc/core": "^1.2.165",
     "@swc/register": "^0.1.10",
     "express": "^4.17.3",
-    "local-web-server": "^5.2.0",
+    "fast-memoize": "^2.5.2",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-query": "^4.0.0-beta.3"
   }
 }
